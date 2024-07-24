@@ -19,12 +19,12 @@ function analytics.setupInterface( options )
 	package.loaded['mw.ext.analytics'] = analytics
 end
 
-function analytics.getViewsData( page )
-	return php.getViewsData( page )
+function analytics.getViewsData( params )
+	return php.getViewsData( params )
 end
 
-function analytics.getEditsData( page )
-	return php.getEditsData( page )
+function analytics.getEditsData( params )
+	return php.getEditsData( params )
 end
 
 return analytics

@@ -22,11 +22,11 @@
 		"Analytics": "SpecialAnalytics"
 	},
 	"AutoloadClasses": {
-		"Analytics": "Analytics.php",
-		"AnalyticsUpdate": "AnalyticsUpdate.php",
-		"AnalyticsAPI": "AnalyticsAPI.php",
-		"AnalyticsLua": "AnalyticsLua.php",
-		"SpecialAnalytics": "SpecialAnalytics.php"
+		"Analytics": "includes/Analytics.php",
+		"AnalyticsUpdate": "includes/AnalyticsUpdate.php",
+		"AnalyticsAPI": "includes/AnalyticsAPI.php",
+		"AnalyticsLua": "includes/AnalyticsLua.php",
+		"SpecialAnalytics": "includes/SpecialAnalytics.php"
 	},
 	"ResourceModules": {
 		"ext.Analytics.styles": {

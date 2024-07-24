@@ -17,8 +17,6 @@ class SpecialAnalytics extends SpecialPage {
 		$output->addScript( '<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>' );
 		$output->addModules( 'ext.Analytics' );
 
-		$config = $this->getConfig();
-
 		$html = Html::openElement( 'div', [ 'id' => 'analytics' ] );
 
 		$days = new OOUI\DropdownInputWidget( [
@@ -47,16 +45,14 @@ class SpecialAnalytics extends SpecialPage {
 
 		$html .= Html::closeElement( 'div' );
 
-		if ( $config->get( 'AnalyticsPageViews' ) ) {
-			$html .= Html::element( 'h2', [ 'id' => 'Views' ], 'Views' );
-			$html .= Html::element( 'canvas', [ 'id' => 'analytics-views', 'class' => 'analytics-canvas', 'width' => 1000, 'height' => 300 ] );
-		}
+		$html .= Html::element( 'h2', [ 'id' => 'Views' ], 'Views' );
+		$html .= Html::element( 'canvas', [ 'id' => 'analytics-views', 'class' => 'analytics-canvas', 'width' => 1000, 'height' => 200 ] );
 
 		$html .= Html::element( 'h2', [ 'id' => 'Edits' ], 'Edits' );
-		$html .= Html::element( 'canvas', [ 'id' => 'analytics-edits', 'class' => 'analytics-canvas', 'width' => 1000, 'height' => 300 ] );
+		$html .= Html::element( 'canvas', [ 'id' => 'analytics-edits', 'class' => 'analytics-canvas', 'width' => 1000, 'height' => 200 ] );
 
 		$html .= Html::element( 'h2', [ 'id' => 'Editors' ], 'Editors' );
-		$html .= Html::element( 'canvas', [ 'id' => 'analytics-editors', 'class' => 'analytics-canvas', 'width' => 1000, 'height' => 300 ] );
+		$html .= Html::element( 'canvas', [ 'id' => 'analytics-editors', 'class' => 'analytics-canvas', 'width' => 1000, 'height' => 200 ] );
 
 		$html .= Html::element( 'h2', [ 'id' => 'TopEditors' ], 'Top editors' );
 		$html .= Html::element( 'div', [ 'id' => 'analytics-top-editors' ] );

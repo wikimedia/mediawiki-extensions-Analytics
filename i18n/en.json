@@ -1,0 +1,10 @@
+{
+	"@metadata": {
+		"authors": [
+			"Sophivorus"
+		]
+	},
+	"analytics": "Analytics",
+	"analytics-desc": "Creates a dynamic analytics of wiki activity",
+	"analytics-last-30-days": "Last 30 days"
+}

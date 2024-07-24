@@ -1,2 +1,3 @@
 # Analytics
-MediaWiki extension for analytics
+
+https://www.mediawiki.org/wiki/Extension:Analytics

@@ -1,0 +1,63 @@
+{
+	"manifest_version": 2,
+	"name": "Analytics",
+	"version": "1.0",
+	"url": "https://www.mediawiki.org/wiki/Extension:Analytics",
+	"author": "[https://www.mediawiki.org/wiki/User:Sophivorus Felipe Schenone]",
+	"descriptionmsg": "analytics-desc",
+	"license-name": "GPL-3.0-or-later",
+	"type": "special",
+	"requires": {
+		"MediaWiki": ">= 1.39.0"
+	},
+	"MessagesDirs": {
+		"Analytics": [
+			"i18n"
+		]
+	},
+	"ExtensionMessagesFiles": {
+		"AnalyticsAlias": "Analytics.alias.php"
+	},
+	"SpecialPages": {
+		"Analytics": "SpecialAnalytics"
+	},
+	"AutoloadClasses": {
+		"Analytics": "Analytics.php",
+		"AnalyticsUpdate": "AnalyticsUpdate.php",
+		"AnalyticsAPI": "AnalyticsAPI.php",
+		"AnalyticsLua": "AnalyticsLua.php",
+		"SpecialAnalytics": "SpecialAnalytics.php"
+	},
+	"ResourceModules": {
+		"ext.Analytics.styles": {
+			"styles": "Analytics.less"
+		},
+		"ext.Analytics": {
+			"scripts": "Analytics.js",
+			"messages": [
+				"analytics-last-30-days"
+			]
+		}
+	},
+	"ResourceFileModulePaths": {
+		"localBasePath": "",
+		"remoteExtPath": "Analytics"
+	},
+	"Hooks": {
+		"LoadExtensionSchemaUpdates": "Analytics::onLoadExtensionSchemaUpdates",
+		"PageViewUpdates": "Analytics::onPageViewUpdates",
+		"ScribuntoExternalLibraries": "AnalyticsLua::onScribuntoExternalLibraries"
+	},
+	"RestRoutes": [
+		{
+			"path": "/analytics/{dataset}",
+			"method": "GET",
+			"class": "AnalyticsAPI"
+		}
+	],
+	"config": {
+		"AnalyticsCountPageViews": {
+			"value": true
+		}
+	}
+}

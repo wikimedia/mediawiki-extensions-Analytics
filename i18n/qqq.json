@@ -1,0 +1,10 @@
+{
+	"@metadata": {
+		"authors": [
+			"Sophivorus"
+		]
+	},
+	"analytics": "Title of the special page",
+	"analytics-desc": "{{desc|name=Analytics|url=https://www.mediawiki.org/wiki/Extension:Analytics}}",
+	"analytics-last-30-days": "Dropdown option for the last 30 days"
+}

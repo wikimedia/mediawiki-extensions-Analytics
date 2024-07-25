@@ -2,14 +2,14 @@ let Analytics = {
 
 	init: function () {
 		Analytics.update();
-		$( '#analytics-days select' ).on( 'change', Analytics.update );
-		$( '#analytics-page input' ).on( 'change', Analytics.update );
+		$( '#special-analytics-days select' ).on( 'change', Analytics.update );
+		$( '#special-analytics-page input' ).on( 'change', Analytics.update );
 	},
 
 	update: function () {
 		// Get the relevant params
-		const days = $( '#analytics-days select' ).val();
-		const page = $( '#analytics-page input' ).val();
+		const days = $( '#special-analytics-days select' ).val();
+		const page = $( '#special-analytics-page input' ).val();
 		const params = {};
 		if ( days ) {
 			params.days = days;
@@ -25,7 +25,7 @@ let Analytics = {
 		Analytics.updateTopEditors( params );
 
 		// Update the URL
-		let url = 'Special:Analytics';
+		let url = 'Special:Analytics'; // @todo i18n
 		if ( page ) {
 			url += '/' + page;
 		}
@@ -36,7 +36,7 @@ let Analytics = {
 
 	updateViews: function ( params ) {
 		new mw.Rest().get( '/analytics/views', params ).done( function ( data ) {
-			const canvas = document.getElementById( 'analytics-views' );
+			const canvas = document.getElementById( 'special-analytics-views' );
 			if ( Analytics.viewsChart ) {
 				Analytics.viewsChart.destroy();
 			}
@@ -46,7 +46,7 @@ let Analytics = {
 
 	updateEdits: function ( params ) {
 		new mw.Rest().get( '/analytics/edits', params ).done( function ( data ) {
-			const canvas = document.getElementById( 'analytics-edits' );
+			const canvas = document.getElementById( 'special-analytics-edits' );
 			if ( Analytics.editsChart ) {
 				Analytics.editsChart.destroy();
 			}
@@ -56,7 +56,7 @@ let Analytics = {
 
 	updateEditors: function ( params ) {
 		new mw.Rest().get( '/analytics/editors', params ).done( function ( data ) {
-			const canvas = document.getElementById( 'analytics-editors' );
+			const canvas = document.getElementById( 'special-analytics-editors' );
 			if ( Analytics.editorsChart ) {
 				Analytics.editorsChart.destroy();
 			}

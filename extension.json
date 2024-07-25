@@ -33,15 +33,18 @@
 			"styles": "Analytics.less"
 		},
 		"ext.Analytics": {
-			"scripts": "Analytics.js",
+			"scripts": [
+				"Chart.js",
+				"Analytics.js"
+			],
 			"messages": [
 				"analytics-last-30-days"
 			]
 		}
 	},
 	"ResourceFileModulePaths": {
-		"localBasePath": "",
-		"remoteExtPath": "Analytics"
+		"localBasePath": "resources",
+		"remoteExtPath": "Analytics/resources"
 	},
 	"Hooks": {
 		"LoadExtensionSchemaUpdates": "Analytics::onLoadExtensionSchemaUpdates",

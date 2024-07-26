@@ -135,14 +135,14 @@ class Analytics {
 			}
 		}
 		$query->groupBy( "LEFT( timestamp, $timestampLength )" )
-			->orderBy( 'timestamp ASC' )
+			->orderBy( 'timestamp DESC' )
 			->limit( $dataPoints );
 
 		// Fetch the results
 		$results = [];
 		$resultSet = $query->fetchResultSet();
 		foreach ( $resultSet as $result ) {
-			$timestamp = $result->timestamp;
+			$timestamp = strval( $result->timestamp );
 			$value = $result->value;
 			$results[ $timestamp ] = $value;
 		}
@@ -152,7 +152,8 @@ class Analytics {
 		for ( $dataPoint = 0; $dataPoint < $dataPoints; $dataPoint++ ) {
 			$timestamp = date( $timestampFormat, strtotime( "-$dataPoint $period" ) );
 			if ( array_key_exists( $timestamp, $results ) ) {
-				$data[ $timestamp ] = $results[ $timestamp ];
+				$value = intval( $results[ $timestamp ] );
+				$data[ $timestamp ] = $value;
 			} else {
 				$data[ $timestamp ] = 0;
 			}

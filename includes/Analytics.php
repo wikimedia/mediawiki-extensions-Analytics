@@ -195,7 +195,7 @@ class Analytics {
 			if ( $title->getNamespace() === NS_CATEGORY ) {
 				$tablePrefix = $dbr->tablePrefix();
 				$pageKey = $title->getDBkey();
-				$query->where( $pageField . ' IN ( SELECT cl_from FROM ' . $tablePrefix . 'categorylinks WHERE cl_to = "' . $pageKey . '" )' );
+				$query->where( 'rev_page IN ( SELECT cl_from FROM ' . $tablePrefix . 'categorylinks WHERE cl_to = "' . $pageKey . '" )' );
 			} else {
 				$pageId = $title->getArticleID();
 				$query->where( [ 'rev_page' => $pageId ] );

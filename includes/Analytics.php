@@ -40,13 +40,9 @@ class Analytics {
 	}
 
 	private static function getChartData( $chart, $params ) {
+
 		// Set the relevant params
-		// @todo Make more readable and robust
 		$page = empty( $params['page'] ) ? null : $params['page'];
-		if ( $page ) {
-			$title = Title::newFromText( $page );
-			$pageID = $title->getArticleID();
-		}
 		$days = empty( $params['days'] ) ? 9999 : intval( $params['days'] );
 		$frequency = empty( $params['frequency'] ) ? null : $params['frequency'];
 
@@ -54,77 +50,93 @@ class Analytics {
 		if ( !$frequency ) {
 			switch ( $days ) {
 				case $days > 1100:
-					$frequency = 'years';
+					$frequency = 'yearly';
 					break;
 				case $days > 90:
-					$frequency = 'months';
+					$frequency = 'monthly';
 					break;
 				case $days < 2:
-					$frequency = 'hours';
+					$frequency = 'hourly';
 					break;
 				default:
-					$frequency = 'days';
+					$frequency = 'daily';
 					break;
 			}
 		}
 
-		// Figure out some variables
+		// Set some variables
+		$from = date( 'Ymd', strtotime( "-$days days" ) );
+		$to = date( 'Ymd' ); // Today
 		switch ( $frequency ) {
-			case 'years':
+			case 'yearly':
+				$period = 'years';
 				$timestampFormat = 'Y';
 				$timestampLength = 4; // YYYY
 				$dataPoints = ceil( $days / 365 );
 				break;
-			case 'months':
+			case 'monthly':
+				$period = 'months';
 				$timestampFormat = 'Ym';
 				$timestampLength = 6; // YYYYMM
 				$dataPoints = ceil( $days / 30 );
 				break;
-			case 'hours':
+			case 'hourly':
+				$period = 'hours';
 				$timestampFormat = 'Ymdh';
 				$timestampLength = 10; // YYYYMMDDHH
 				$dataPoints = ceil( $days * 24 );
 				break;
-			case 'days':
+			case 'daily':
+				$period = 'days';
 				$timestampFormat = 'Ymd';
 				$timestampLength = 8; // YYYYMMDD
 				$dataPoints = $days;
 				break;
 		}
 
-		// Build the database query
-		$lb = MediaWikiServices::getInstance()->getDBLoadBalancer();
+		// Connect to the database
+		$services = MediaWikiServices::getInstance();
+		$lb = $services->getDBLoadBalancer();
 		$dbr = $lb->getConnectionRef( DB_REPLICA );
+
+		// Build the database query
 		$query = $dbr->newSelectQueryBuilder();
 		switch ( $chart ) {
 			case 'views':
-				// @todo No hourly data
 				$query->select( [ "LEFT( ap_timestamp, $timestampLength ) AS timestamp", 'SUM( ap_views ) AS value' ] )
-					->from( 'analytics_pageviews' )
-					->groupBy( "LEFT( ap_timestamp, $timestampLength )" );
-				if ( $pageID ) {
-					$query->where( [ 'ap_page' => $pageID ] );
-				}
+					->from( 'analytics_pageviews' );
+				$pageField = 'ap_page';
 				break;
 			case 'edits':
 				$query->select( [ "LEFT( rev_timestamp, $timestampLength ) AS timestamp", 'COUNT(*) AS value' ] )
-					->from( 'revision' )
-					->groupBy( "LEFT( rev_timestamp, $timestampLength )" );
-				if ( $pageID ) {
-					$query->where( [ 'rev_page' => $pageID ] );
-				}
+					->from( 'revision' );
+				$pageField = 'rev_page';
+				break;
+			case 'pages':
+				$query->select( [ "LEFT( rev_timestamp, $timestampLength ) AS timestamp", 'MIN( rev_timestamp ) AS value' ] )
+					->from( 'revision' );
+				$pageField = 'rev_page';
 				break;
 			case 'editors':
 				$query->select( [ "LEFT( rev_timestamp, $timestampLength ) AS timestamp", 'COUNT( DISTINCT rev_actor ) AS value' ] )
-					->from( 'revision' )
-					->groupBy( "LEFT( rev_timestamp, $timestampLength )" );
-					if ( $pageID ) {
-						$query->where( [ 'rev_page' => $pageID ] );
-					}
+					->from( 'revision' );
+				$pageField = 'rev_page';
 				break;
 		}
-		$query->orderBy( 'timestamp DESC' );
-		$query->limit( $dataPoints );
+		if ( $page ) {
+			$title = Title::newFromText( $page );
+			if ( $title->getNamespace() === NS_CATEGORY ) {
+				$tablePrefix = $dbr->tablePrefix();
+				$pageKey = $title->getDBkey();
+				$query->where( $pageField . ' IN ( SELECT cl_from FROM ' . $tablePrefix . 'categorylinks WHERE cl_to = "' . $pageKey . '" )' );
+			} else {
+				$pageId = $title->getArticleID();
+				$query->where( [ $pageField => $pageId ] );
+			}
+		}
+		$query->groupBy( "LEFT( timestamp, $timestampLength )" )
+			->orderBy( 'timestamp ASC' )
+			->limit( $dataPoints );
 
 		// Fetch the results
 		$results = [];
@@ -138,7 +150,7 @@ class Analytics {
 		// Fill the empty values
 		$data = [];
 		for ( $dataPoint = 0; $dataPoint < $dataPoints; $dataPoint++ ) {
-			$timestamp = date( $timestampFormat, strtotime( "-$dataPoint $frequency" ) );
+			$timestamp = date( $timestampFormat, strtotime( "-$dataPoint $period" ) );
 			if ( array_key_exists( $timestamp, $results ) ) {
 				$data[ $timestamp ] = $results[ $timestamp ];
 			} else {
@@ -147,7 +159,7 @@ class Analytics {
 		}
 
 		// Trim the empty values at the start
-		$data = array_reverse( $data, true );
+		$data = array_reverse( $data, true ); // This shouldn't be necessary
 		foreach ( $data as $timestamp => $value ) {
 			if ( $value === 0 ) {
 				unset( $data[ $timestamp ] );
@@ -160,16 +172,16 @@ class Analytics {
 	}
 
 	private static function getTableData( $params ) {
+
 		// Set the relevant params
 		$page = empty( $params['page'] ) ? null : $params['page'];
-		if ( $page ) {
-			$title = Title::newFromText( $page );
-			$pageID = $title->getArticleID();
-		}
 
-		// Query the database
-		$lb = MediaWikiServices::getInstance()->getDBLoadBalancer();
+		// Connect to the database
+		$services = MediaWikiServices::getInstance();
+		$lb = $services->getDBLoadBalancer();
 		$dbr = $lb->getConnectionRef( DB_REPLICA );
+
+		// Build the query
 		$query = $dbr->newSelectQueryBuilder()
 			->select( [ 'actor_name AS actor', 'COUNT( rev_id ) as edits' ] )
 			->from( 'revision' )
@@ -177,8 +189,15 @@ class Analytics {
 			->groupBy( 'rev_actor' )
 			->orderBy( 'edits DESC' )
 			->limit( 10 );
-		if ( $pageID ) {
-			$query->where( [ 'rev_page' => $pageID ] );
+		if ( $page ) {
+			if ( $title->getNamespace() === NS_CATEGORY ) {
+				$tablePrefix = $dbr->tablePrefix();
+				$pageKey = $title->getDBkey();
+				$query->where( $pageField . ' IN ( SELECT cl_from FROM ' . $tablePrefix . 'categorylinks WHERE cl_to = "' . $pageKey . '" )' );
+			} else {
+				$pageId = $title->getArticleID();
+				$query->where( [ 'rev_page' => $pageId ] );
+			}
 		}
 
 		// Extract the data
@@ -189,6 +208,7 @@ class Analytics {
 			$edits = $result->edits;
 			$data[ $actor ] = $edits;
 		}
+
 		return $data;
 	}
 }

@@ -34,9 +34,11 @@ let Analytics = {
 		window.history.pushState( {}, '', url );
 	},
 
-	updateViews: function ( params ) {
+	updateViews: function ( params, canvas ) {
+		if ( !canvas ) {
+			canvas = document.getElementById( 'special-analytics-views' );
+		}
 		new mw.Rest().get( '/analytics/views', params ).done( function ( data ) {
-			const canvas = document.getElementById( 'special-analytics-views' );
 			if ( Analytics.viewsChart ) {
 				Analytics.viewsChart.destroy();
 			}
@@ -44,9 +46,11 @@ let Analytics = {
 		} );
 	},
 
-	updateEdits: function ( params ) {
+	updateEdits: function ( params, canvas ) {
+		if ( !canvas ) {
+			canvas = document.getElementById( 'special-analytics-edits' );
+		}
 		new mw.Rest().get( '/analytics/edits', params ).done( function ( data ) {
-			const canvas = document.getElementById( 'special-analytics-edits' );
 			if ( Analytics.editsChart ) {
 				Analytics.editsChart.destroy();
 			}
@@ -54,9 +58,11 @@ let Analytics = {
 		} );
 	},
 
-	updateEditors: function ( params ) {
+	updateEditors: function ( params, canvas ) {
+		if ( !canvas ) {
+			canvas = document.getElementById( 'special-analytics-editors' );
+		}
 		new mw.Rest().get( '/analytics/editors', params ).done( function ( data ) {
-			const canvas = document.getElementById( 'special-analytics-editors' );
 			if ( Analytics.editorsChart ) {
 				Analytics.editorsChart.destroy();
 			}
@@ -64,27 +70,14 @@ let Analytics = {
 		} );
 	},
 
-	updateTopEditors: function ( params ) {
+	updateTopEditors: function ( params, div ) {
+		if ( !div ) {
+			div = document.getElementById( 'special-analytics-top-editors' );
+		}
 		new mw.Rest().get( '/analytics/top-editors', params ).done( function ( data ) {
 			const $table = Analytics.makeTable( data );
-			$( '#analytics-top-editors' ).html( $table );
+			$( div ).html( $table );
 		} );
-	},
-
-	makeTable: function ( data ) {
-		const $th1 = $( '<th>User</th>' );
-		const $th2 = $( '<th>Edits</th>' );
-		const $thr = $( '<tr></tr>' ).append( $th1, $th2 );
-		const $table = $( '<table class="wikitable"></table>' ).append( $thr );
-		for ( const [ user, edits ] of Object.entries( data ) ) {
-			const url = mw.util.getUrl( 'User:' + user );
-			const link = $( '<a href="' + url + '">' + user + '</a>' );
-			const $td1 = $( '<td></td>' ).html( link );
-			const $td2 = $( '<td></td>' ).text( edits );
-			const $tdr = $( '<tr></tr>' ).append( $td1, $td2 );
-			$table.append( $tdr );
-		}
-		return $table;
 	},
 
 	makeChart: function ( canvas, data ) {
@@ -112,6 +105,22 @@ let Analytics = {
 				}
 			}
 		} );
+	},
+
+	makeTable: function ( data ) {
+		const $th1 = $( '<th>User</th>' );
+		const $th2 = $( '<th>Edits</th>' );
+		const $thr = $( '<tr></tr>' ).append( $th1, $th2 );
+		const $table = $( '<table class="wikitable"></table>' ).append( $thr );
+		for ( const [ user, edits ] of Object.entries( data ) ) {
+			const url = mw.util.getUrl( 'User:' + user );
+			const link = $( '<a href="' + url + '">' + user + '</a>' );
+			const $td1 = $( '<td></td>' ).html( link );
+			const $td2 = $( '<td></td>' ).text( edits );
+			const $tdr = $( '<tr></tr>' ).append( $td1, $td2 );
+			$table.append( $tdr );
+		}
+		return $table;
 	}
 };
 

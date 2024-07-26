@@ -191,6 +191,7 @@ class Analytics {
 			->orderBy( 'edits DESC' )
 			->limit( 10 );
 		if ( $page ) {
+			$title = Title::newFromText( $page );
 			if ( $title->getNamespace() === NS_CATEGORY ) {
 				$tablePrefix = $dbr->tablePrefix();
 				$pageKey = $title->getDBkey();

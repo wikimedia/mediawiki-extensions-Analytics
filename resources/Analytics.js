@@ -1,14 +1,12 @@
 let Analytics = {
 
 	init: function () {
-		if ( $( 'body' ).hasClass( 'mw-special-Analytics' ) ) {
-			Analytics.updateSpecial();
-			$( '#special-analytics-days select' ).on( 'change', Analytics.updateSpecial );
-			$( '#special-analytics-page input' ).on( 'change', Analytics.updateSpecial );
-		}
+		Analytics.update();
+		$( '#special-analytics-days select' ).on( 'change', Analytics.update );
+		$( '#special-analytics-page input' ).on( 'change', Analytics.update );
 	},
 
-	updateSpecial: function () {
+	update: function () {
 		// Get the relevant params
 		const days = $( '#special-analytics-days select' ).val();
 		const page = $( '#special-analytics-page input' ).val();
@@ -35,10 +33,7 @@ let Analytics = {
 		Analytics.updateTopEditors( params );
 	},
 
-	updateViews: function ( params, canvas ) {
-		if ( !canvas ) {
-			canvas = document.getElementById( 'special-analytics-views' );
-		}
+	updateViews: function ( params ) {
 		new mw.Rest().get( '/analytics/views', params ).done( function ( data ) {
 			if ( Analytics.viewsChart ) {
 				Analytics.viewsChart.destroy();
@@ -47,10 +42,7 @@ let Analytics = {
 		} );
 	},
 
-	updateEdits: function ( params, canvas ) {
-		if ( !canvas ) {
-			canvas = document.getElementById( 'special-analytics-edits' );
-		}
+	updateEdits: function ( params ) {
 		new mw.Rest().get( '/analytics/edits', params ).done( function ( data ) {
 			if ( Analytics.editsChart ) {
 				Analytics.editsChart.destroy();
@@ -59,10 +51,7 @@ let Analytics = {
 		} );
 	},
 
-	updateEditors: function ( params, canvas ) {
-		if ( !canvas ) {
-			canvas = document.getElementById( 'special-analytics-editors' );
-		}
+	updateEditors: function ( params ) {
 		new mw.Rest().get( '/analytics/editors', params ).done( function ( data ) {
 			if ( Analytics.editorsChart ) {
 				Analytics.editorsChart.destroy();
@@ -71,10 +60,7 @@ let Analytics = {
 		} );
 	},
 
-	updateTopEditors: function ( params, div ) {
-		if ( !div ) {
-			div = document.getElementById( 'special-analytics-top-editors' );
-		}
+	updateTopEditors: function ( params ) {
 		new mw.Rest().get( '/analytics/top-editors', params ).done( function ( data ) {
 			const $table = Analytics.makeTable( data );
 			$( div ).html( $table );

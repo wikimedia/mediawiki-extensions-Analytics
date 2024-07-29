@@ -1,37 +1,38 @@
 let Analytics = {
 
 	init: function () {
-		Analytics.update();
-		$( '#special-analytics-days select' ).on( 'change', Analytics.update );
-		$( '#special-analytics-page input' ).on( 'change', Analytics.update );
+		if ( $( 'body' ).hasClass( 'mw-special-Analytics' ) ) {
+			Analytics.updateSpecial();
+			$( '#special-analytics-days select' ).on( 'change', Analytics.updateSpecial );
+			$( '#special-analytics-page input' ).on( 'change', Analytics.updateSpecial );
+		}
 	},
 
-	update: function () {
+	updateSpecial: function () {
 		// Get the relevant params
 		const days = $( '#special-analytics-days select' ).val();
 		const page = $( '#special-analytics-page input' ).val();
-		const params = {};
+
+		// Update the URL
+		const url = new URL( window.location.href );
 		if ( days ) {
-			params.days = days;
+			url.searchParams.set( 'days', days );
+		} else {
+			url.searchParams.delete( 'days' );
 		}
 		if ( page ) {
-			params.page = page;
+			url.searchParams.set( 'page', page );
+		} else {
+			url.searchParams.delete( 'page' );
 		}
+		window.history.pushState( {}, '', url.href );
 
 		// Update the charts and tables
+		const params = Object.fromEntries( url.searchParams );
 		Analytics.updateViews( params );
 		Analytics.updateEdits( params );
 		Analytics.updateEditors( params );
 		Analytics.updateTopEditors( params );
-
-		// Update the URL
-		let url = 'Special:Analytics'; // @todo i18n
-		if ( page ) {
-			url += '/' + page;
-		}
-		delete params.page;
-		url = mw.util.getUrl( url, params );
-		window.history.pushState( {}, '', url );
 	},
 
 	updateViews: function ( params, canvas ) {

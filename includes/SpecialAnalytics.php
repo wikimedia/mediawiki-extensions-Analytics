@@ -15,10 +15,15 @@ class SpecialAnalytics extends SpecialPage {
 		$output->addModuleStyles( 'ext.Analytics.styles' );
 		$output->addModules( 'ext.Analytics' );
 
+		$request = $this->getRequest();
+
 		$html = Html::openElement( 'div', [ 'id' => 'special-analytics' ] );
 
-		$days = new OOUI\DropdownInputWidget( [
+		$days = $request->getRawVal( 'days' );
+		$days = $days ? intval( $days ) : '';
+		$daysDropdown = new OOUI\DropdownInputWidget( [
 			'id' => 'special-analytics-days',
+			'value' => $days,
 			'options' => [
 				[ 'data' => 1, 'label' => 'Last 24 hours' ],
 				[ 'data' => 3, 'label' => 'Last 3 days' ],
@@ -30,7 +35,7 @@ class SpecialAnalytics extends SpecialPage {
 			]
 		] );
 
-		$page = new OOUI\TextInputWidget( [
+		$pageInput = new OOUI\TextInputWidget( [
 			'id' => 'special-analytics-page',
 			'placeholder' => 'Filter by page...',
 			'value' => $subpage ? str_replace( '_', ' ', $subpage ) : null
@@ -38,7 +43,7 @@ class SpecialAnalytics extends SpecialPage {
 
 		$html .= new OOUI\HorizontalLayout( [
 			'id' => 'special-analytics-filters',
-			'items' => [ $days, $page ]
+			'items' => [ $daysDropdown, $pageInput ]
 		] );
 
 		$html .= Html::closeElement( 'div' );

@@ -35,6 +35,19 @@ class SpecialAnalytics extends SpecialPage {
 			]
 		] );
 
+		$frequency = $request->getRawVal( 'frequency' );
+		$frequencyDropdown = new OOUI\DropdownInputWidget( [
+			'id' => 'special-analytics-frequency',
+			'value' => $frequency,
+			'options' => [
+				[ 'data' => 'hourly', 'label' => 'Hourly' ],
+				[ 'data' => 'daily', 'label' => 'Daily' ],
+				[ 'data' => 'monthly', 'label' => 'Monthly' ],
+				[ 'data' => 'yearly', 'label' => 'Yearly' ],
+				[ 'data' => '', 'label' => 'Auto frequency' ],
+			]
+		] );
+
 		$pageInput = new OOUI\TextInputWidget( [
 			'id' => 'special-analytics-page',
 			'placeholder' => 'Filter by page...',
@@ -43,7 +56,7 @@ class SpecialAnalytics extends SpecialPage {
 
 		$html .= new OOUI\HorizontalLayout( [
 			'id' => 'special-analytics-filters',
-			'items' => [ $daysDropdown, $pageInput ]
+			'items' => [ $daysDropdown, $frequencyDropdown, $pageInput ]
 		] );
 
 		$html .= Html::closeElement( 'div' );

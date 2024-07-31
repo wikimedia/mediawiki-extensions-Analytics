@@ -38,7 +38,8 @@
 				"Analytics.js"
 			],
 			"messages": [
-				"analytics-last-30-days"
+				"analytics-top-editors-user",
+				"analytics-top-editors-edits"
 			]
 		}
 	},
@@ -53,7 +54,7 @@
 	},
 	"RestRoutes": [
 		{
-			"path": "/analytics/{dataset}",
+			"path": "/analytics/{endpoint}",
 			"method": "GET",
 			"class": "AnalyticsAPI"
 		}

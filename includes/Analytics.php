@@ -44,54 +44,19 @@ class Analytics {
 		// Set the relevant params
 		$page = empty( $params['page'] ) ? null : $params['page'];
 		$days = empty( $params['days'] ) ? 9999 : intval( $params['days'] );
-		$frequency = empty( $params['frequency'] ) ? null : $params['frequency'];
-
-		// Figure out the best frequency when it's not given
-		if ( !$frequency ) {
-			switch ( $days ) {
-				case $days > 1100:
-					$frequency = 'yearly';
-					break;
-				case $days > 90:
-					$frequency = 'monthly';
-					break;
-				case $days < 2:
-					$frequency = 'hourly';
-					break;
-				default:
-					$frequency = 'daily';
-					break;
-			}
-		}
+		$frequency = empty( $params['frequency'] ) ? 'monthly' : $params['frequency'];
 
 		// Set some variables
-		$from = date( 'Ymd', strtotime( "-$days days" ) );
-		$to = date( 'Ymd' ); // Today
-		switch ( $frequency ) {
-			case 'yearly':
-				$period = 'years';
-				$timestampFormat = 'Y';
-				$timestampLength = 4; // YYYY
-				$dataPoints = ceil( $days / 365 );
-				break;
-			case 'monthly':
-				$period = 'months';
-				$timestampFormat = 'Ym';
-				$timestampLength = 6; // YYYYMM
-				$dataPoints = ceil( $days / 30 );
-				break;
-			case 'hourly':
-				$period = 'hours';
-				$timestampFormat = 'Ymdh';
-				$timestampLength = 10; // YYYYMMDDHH
-				$dataPoints = ceil( $days * 24 );
-				break;
-			case 'daily':
-				$period = 'days';
-				$timestampFormat = 'Ymd';
-				$timestampLength = 8; // YYYYMMDD
-				$dataPoints = $days;
-				break;
+		if ( $frequency === 'daily' ) {
+			$period = 'days';
+			$timestampFormat = 'Ymd';
+			$timestampLength = 8; // YYYYMMDD
+			$dataPoints = $days;
+		} else {
+			$period = 'months';
+			$timestampFormat = 'Ym';
+			$timestampLength = 6; // YYYYMM
+			$dataPoints = ceil( $days / 30 );
 		}
 
 		// Connect to the database

@@ -106,8 +106,8 @@ let Analytics = {
 	},
 
 	makeTable: function ( data ) {
-		const $th1 = $( '<th>User</th>' );
-		const $th2 = $( '<th>Edits</th>' );
+		const $th1 = $( '<th></th>' ).text( mw.msg( 'analytics-top-editors-user' ) );
+		const $th2 = $( '<th></th>' ).text( mw.msg( 'analytics-top-editors-edits' ) );
 		const $thr = $( '<tr></tr>' ).append( $th1, $th2 );
 		const $table = $( '<table class="wikitable"></table>' ).append( $thr );
 		for ( const [ user, edits ] of Object.entries( data ) ) {

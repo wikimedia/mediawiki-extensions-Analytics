@@ -6,14 +6,18 @@ use Wikimedia\ParamValidator\ParamValidator;
 
 /**
  * Class to get analytics for a page or the entire site
- * GET /analytics/{dataset}
+ * GET /analytics/{endpoint}
  */
 class AnalyticsAPI extends SimpleHandler {
 
-	public function run( $dataset ) {
+	private const VALID_ENDPOINTS = [ 'views', 'edits', 'editors', 'top-editors' ];
+
+	private const VALID_FREQUENCIES = [ 'monthly', 'daily' ];
+
+	public function run( $endpoint ) {
 		$request = $this->getRequest();
 		$params = $request->getQueryParams();
-		switch ( $dataset ) {
+		switch ( $endpoint ) {
 			case 'views':
 				$data = Analytics::getViewsData( $params );
 				break;
@@ -38,10 +42,22 @@ class AnalyticsAPI extends SimpleHandler {
 	/** @inheritDoc */
 	public function getParamSettings() {
 		return [
-			'dataset' => [
+			'endpoint' => [
 				self::PARAM_SOURCE => 'path',
-				ParamValidator::PARAM_TYPE => 'string',
+				ParamValidator::PARAM_TYPE => self::VALID_ENDPOINTS,
 				ParamValidator::PARAM_REQUIRED => true
+			],
+			'days' => [
+				self::PARAM_SOURCE => 'query',
+				ParamValidator::PARAM_TYPE => 'string'
+			],
+			'frequency' => [
+				self::PARAM_SOURCE => 'query',
+				ParamValidator::PARAM_TYPE => self::VALID_FREQUENCIES,
+			],
+			'page' => [
+				self::PARAM_SOURCE => 'query',
+				ParamValidator::PARAM_TYPE => 'string'
 			]
 		];
 	}

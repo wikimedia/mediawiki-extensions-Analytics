@@ -5,6 +5,18 @@
 		]
 	},
 	"analytics": "Analytics",
-	"analytics-desc": "Creates a dynamic analytics of wiki activity",
-	"analytics-last-30-days": "Last 30 days"
+	"analytics-desc": "Traffic and edit analytics",
+	"analytics-last-30-days": "Last 30 days",
+	"analytics-last-90-days": "Last 90 days",
+	"analytics-last-365-days": "Last 365 days",
+	"analytics-all-time": "All time",
+	"analytics-daily": "Daily",
+	"analytics-monthly": "Monthly",
+	"analytics-filter": "Filter by page or category...",
+	"analytics-views": "Views",
+	"analytics-edits": "Edits",
+	"analytics-editors": "Editors",
+	"analytics-top-editors": "Top editors",
+	"analytics-top-editors-user": "User",
+	"analytics-top-editors-edits": "Edits"
 }

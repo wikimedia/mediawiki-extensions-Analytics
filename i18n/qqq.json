@@ -4,7 +4,19 @@
 			"Sophivorus"
 		]
 	},
-	"analytics": "Title of the special page",
+	"analytics": "Title of the special page.",
 	"analytics-desc": "{{desc|name=Analytics|url=https://www.mediawiki.org/wiki/Extension:Analytics}}",
-	"analytics-last-30-days": "Dropdown option for the last 30 days"
+	"analytics-last-30-days": "Dropdown option to limit data to the last 30 days.",
+	"analytics-last-90-days": "Dropdown option to limit data to the last 90 days.",
+	"analytics-last-30-days": "Dropdown option to limit data to the last 365 days.",
+	"analytics-all-time": "Dropdown option to not limit data by date.",
+	"analytics-daily": "Dropdown option to group results by day.",
+	"analytics-monthly": "Dropdown option to group results by month.",
+	"analytics-filter": "Placeholder to limit data to a specific page or category.",
+	"analytics-views": "Section title for the data regarding page views.",
+	"analytics-edits": "Section title for the data regarding edits.",
+	"analytics-editors": "Section title for the data regarding editors.",
+	"analytics-top-editors": "Section title for the data regarding top editors.",
+	"analytics-top-editors-user": "Table header for the user names column of the top editors table.",
+	"analytics-top-editors-edits": "Table header for the edit count column of the top editors table."
 }

@@ -20,18 +20,14 @@ class SpecialAnalytics extends SpecialPage {
 		$html = Html::openElement( 'div', [ 'id' => 'special-analytics' ] );
 
 		$days = $request->getRawVal( 'days' );
-		$days = $days ? intval( $days ) : '';
 		$daysDropdown = new OOUI\DropdownInputWidget( [
 			'id' => 'special-analytics-days',
 			'value' => $days,
 			'options' => [
-				[ 'data' => 1, 'label' => 'Last 24 hours' ],
-				[ 'data' => 3, 'label' => 'Last 3 days' ],
-				[ 'data' => 7, 'label' => 'Last 7 days' ],
-				[ 'data' => 30, 'label' => 'Last 30 days' ],
-				[ 'data' => 90, 'label' => 'Last 90 days' ],
-				[ 'data' => 365, 'label' => 'Last 365 days' ],
-				[ 'data' => '', 'label' => 'All time' ],
+				[ 'data' => 30, 'label' => $this->msg( 'analytics-last-30-days' ) ],
+				[ 'data' => 90, 'label' => $this->msg( 'analytics-last-90-days' ) ],
+				[ 'data' => 365, 'label' => $this->msg( 'analytics-last-365-days' ) ],
+				[ 'data' => '', 'label' => $this->msg( 'analytics-all-time' ) ]
 			]
 		] );
 
@@ -40,17 +36,14 @@ class SpecialAnalytics extends SpecialPage {
 			'id' => 'special-analytics-frequency',
 			'value' => $frequency,
 			'options' => [
-				[ 'data' => 'hourly', 'label' => 'Hourly' ],
-				[ 'data' => 'daily', 'label' => 'Daily' ],
-				[ 'data' => 'monthly', 'label' => 'Monthly' ],
-				[ 'data' => 'yearly', 'label' => 'Yearly' ],
-				[ 'data' => '', 'label' => 'Auto frequency' ],
+				[ 'data' => 'daily', 'label' => $this->msg( 'analytics-daily' ) ],
+				[ 'data' => '', 'label' => $this->msg( 'analytics-monthly' ) ]
 			]
 		] );
 
 		$pageInput = new OOUI\TextInputWidget( [
 			'id' => 'special-analytics-page',
-			'placeholder' => 'Filter by page...',
+			'placeholder' => $this->msg( 'analytics-filter' ),
 			'value' => $subpage ? str_replace( '_', ' ', $subpage ) : null
 		] );
 
@@ -61,16 +54,16 @@ class SpecialAnalytics extends SpecialPage {
 
 		$html .= Html::closeElement( 'div' );
 
-		$html .= Html::element( 'h2', [ 'id' => 'Views' ], 'Views' );
+		$html .= Html::element( 'h2', [], $this->msg( 'analytics-views' ) );
 		$html .= Html::element( 'canvas', [ 'id' => 'special-analytics-views', 'class' => 'special-analytics-canvas', 'width' => 1000, 'height' => 200 ] );
 
-		$html .= Html::element( 'h2', [ 'id' => 'Edits' ], 'Edits' );
+		$html .= Html::element( 'h2', [], $this->msg( 'analytics-edits' ) );
 		$html .= Html::element( 'canvas', [ 'id' => 'special-analytics-edits', 'class' => 'special-analytics-canvas', 'width' => 1000, 'height' => 200 ] );
 
-		$html .= Html::element( 'h2', [ 'id' => 'Editors' ], 'Editors' );
+		$html .= Html::element( 'h2', [], $this->msg( 'analytics-editors' ) );
 		$html .= Html::element( 'canvas', [ 'id' => 'special-analytics-editors', 'class' => 'special-analytics-canvas', 'width' => 1000, 'height' => 200 ] );
 
-		$html .= Html::element( 'h2', [ 'id' => 'TopEditors' ], 'Top editors' );
+		$html .= Html::element( 'h3', [], $this->msg( 'analytics-top-editors' ) );
 		$html .= Html::element( 'div', [ 'id' => 'special-analytics-top-editors' ] );
 
 		$html .= Html::closeElement( 'div' );

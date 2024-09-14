@@ -33,6 +33,7 @@ let Analytics = {
 		window.history.pushState( {}, '', url.href );
 
 		// Update the charts and tables
+		// eslint-disable-next-line compat/compat, es-x/no-object-fromentries
 		const params = Object.fromEntries( url.searchParams );
 		Analytics.updateViews( params );
 		Analytics.updateEdits( params );
@@ -41,7 +42,7 @@ let Analytics = {
 	},
 
 	updateViews: function ( params ) {
-		new mw.Rest().get( '/analytics/views', params ).done( function ( data ) {
+		new mw.Rest().get( '/analytics/views', params ).done( ( data ) => {
 			if ( Analytics.viewsChart ) {
 				Analytics.viewsChart.destroy();
 			}
@@ -51,7 +52,7 @@ let Analytics = {
 	},
 
 	updateEdits: function ( params ) {
-		new mw.Rest().get( '/analytics/edits', params ).done( function ( data ) {
+		new mw.Rest().get( '/analytics/edits', params ).done( ( data ) => {
 			if ( Analytics.editsChart ) {
 				Analytics.editsChart.destroy();
 			}
@@ -61,7 +62,7 @@ let Analytics = {
 	},
 
 	updateEditors: function ( params ) {
-		new mw.Rest().get( '/analytics/editors', params ).done( function ( data ) {
+		new mw.Rest().get( '/analytics/editors', params ).done( ( data ) => {
 			if ( Analytics.editorsChart ) {
 				Analytics.editorsChart.destroy();
 			}
@@ -71,7 +72,7 @@ let Analytics = {
 	},
 
 	updateTopEditors: function ( params ) {
-		new mw.Rest().get( '/analytics/top-editors', params ).done( function ( data ) {
+		new mw.Rest().get( '/analytics/top-editors', params ).done( ( data ) => {
 			const $table = Analytics.makeTable( data );
 			const div = document.getElementById( 'special-analytics-top-editors' );
 			$( div ).html( $table );
@@ -84,6 +85,7 @@ let Analytics = {
 			data: {
 				labels: Object.keys( data ),
 				datasets: [ {
+					// eslint-disable-next-line es-x/no-object-values
 					data: Object.values( data ),
 					borderWidth: 1
 				} ]
@@ -110,8 +112,10 @@ let Analytics = {
 		const $th2 = $( '<th></th>' ).text( mw.msg( 'analytics-top-editors-edits' ) );
 		const $thr = $( '<tr></tr>' ).append( $th1, $th2 );
 		const $table = $( '<table class="wikitable"></table>' ).append( $thr );
+		// eslint-disable-next-line es-x/no-object-entries
 		for ( const [ user, edits ] of Object.entries( data ) ) {
 			const url = mw.util.getUrl( 'User:' + user );
+			// eslint-disable-next-line no-jquery/variable-pattern
 			const link = $( '<a href="' + url + '">' + user + '</a>' );
 			const $td1 = $( '<td></td>' ).html( link );
 			const $td2 = $( '<td></td>' ).text( edits );
@@ -127,7 +131,8 @@ let Analytics = {
 Chart.register( {
 	id: 'NoData',
 	afterDraw: function ( chart ) {
-		if ( chart.data.datasets .map( ( d ) => d.data.length ).reduce( ( p, a ) => p + a, 0 ) === 0 ) {
+		// eslint-disable-next-line max-len
+		if ( chart.data.datasets.map( ( d ) => d.data.length ).reduce( ( p, a ) => p + a, 0 ) === 0 ) {
 			const ctx = chart.ctx;
 			const width = chart.width;
 			const height = chart.height;
@@ -140,7 +145,7 @@ Chart.register( {
 			ctx.fillText( 'No data for this time period', width / 2, height / 2 );
 			ctx.restore();
 		}
-	},
+	}
 } );
 
 mw.loader.using( [

@@ -8,7 +8,7 @@
 	"analytics-desc": "{{desc|name=Analytics|url=https://www.mediawiki.org/wiki/Extension:Analytics}}",
 	"analytics-last-30-days": "Dropdown option to limit data to the last 30 days.",
 	"analytics-last-90-days": "Dropdown option to limit data to the last 90 days.",
-	"analytics-last-30-days": "Dropdown option to limit data to the last 365 days.",
+	"analytics-last-365-days": "Dropdown option to limit data to the last 365 days.",
 	"analytics-all-time": "Dropdown option to not limit data by date.",
 	"analytics-daily": "Dropdown option to group results by day.",
 	"analytics-monthly": "Dropdown option to group results by month.",

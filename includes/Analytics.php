@@ -40,7 +40,6 @@ class Analytics {
 	}
 
 	private static function getChartData( $chart, $params ) {
-
 		// Set the relevant params
 		$page = empty( $params['page'] ) ? null : $params['page'];
 		$days = empty( $params['days'] ) ? 9999 : intval( $params['days'] );
@@ -138,7 +137,6 @@ class Analytics {
 	}
 
 	private static function getTableData( $params ) {
-
 		// Set the relevant params
 		$page = empty( $params['page'] ) ? null : $params['page'];
 

@@ -4,14 +4,10 @@ require __DIR__ . '/../../../maintenance/Maintenance.php';
 require __DIR__ . '/../vendor/autoload.php';
 
 use Google\Analytics\Data\V1beta\Client\BetaAnalyticsDataClient;
-use Google\Analytics\Data\V1beta\RunReportRequest;
 use Google\Analytics\Data\V1beta\DateRange;
 use Google\Analytics\Data\V1beta\Dimension;
 use Google\Analytics\Data\V1beta\Metric;
-use Google\Analytics\Data\V1beta\FilterExpression;
-use Google\Analytics\Data\V1beta\Filter;
-use Google\Analytics\Data\V1beta\StringFilter;
-
+use Google\Analytics\Data\V1beta\RunReportRequest;
 use MediaWiki\MediaWikiServices;
 
 class AnalyticsPageViewsScript extends Maintenance {
@@ -39,7 +35,7 @@ class AnalyticsPageViewsScript extends Maintenance {
 		// Connect to the database
 		$services = MediaWikiServices::getInstance();
 		$lb = $services->getDBLoadBalancer();
-		$dbw = $lb->getConnectionRef( DB_MASTER );
+		$dbw = $lb->getConnectionRef( DB_PRIMARY );
 
 		// Connect to Google Cloud
 		$client = new BetaAnalyticsDataClient( [
@@ -76,7 +72,8 @@ class AnalyticsPageViewsScript extends Maintenance {
 			foreach ( $rows as $row ) {
 				$views = $row->getMetricValues()[0]->getValue();
 				$path = $row->getDimensionValues()[0]->getValue();
-				$page = substr( $path, 1 ); // Remove the leading dash
+				// Remove the leading dash
+				$page = substr( $path, 1 );
 				$title = Title::newFromDBkey( $page );
 				if ( !$title ) {
 					continue;

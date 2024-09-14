@@ -1,7 +1,5 @@
 <?php
 
-use MediaWiki\MediaWikiServices;
-
 class SpecialAnalytics extends SpecialPage {
 
 	public function __construct( $name = '', $restriction = '', $listed = true ) {
@@ -55,13 +53,28 @@ class SpecialAnalytics extends SpecialPage {
 		$html .= Html::closeElement( 'div' );
 
 		$html .= Html::element( 'h2', [], $this->msg( 'analytics-views' ) );
-		$html .= Html::element( 'canvas', [ 'id' => 'special-analytics-views', 'class' => 'special-analytics-canvas', 'width' => 1000, 'height' => 200 ] );
+		$html .= Html::element( 'canvas', [
+			'id' => 'special-analytics-views',
+			'class' => 'special-analytics-canvas',
+			'width' => 1000,
+			'height' => 200
+		] );
 
 		$html .= Html::element( 'h2', [], $this->msg( 'analytics-edits' ) );
-		$html .= Html::element( 'canvas', [ 'id' => 'special-analytics-edits', 'class' => 'special-analytics-canvas', 'width' => 1000, 'height' => 200 ] );
+		$html .= Html::element( 'canvas', [
+			'id' => 'special-analytics-edits',
+			'class' => 'special-analytics-canvas',
+			'width' => 1000,
+			'height' => 200
+		] );
 
 		$html .= Html::element( 'h2', [], $this->msg( 'analytics-editors' ) );
-		$html .= Html::element( 'canvas', [ 'id' => 'special-analytics-editors', 'class' => 'special-analytics-canvas', 'width' => 1000, 'height' => 200 ] );
+		$html .= Html::element( 'canvas', [
+			'id' => 'special-analytics-editors',
+			'class' => 'special-analytics-canvas',
+			'width' => 1000,
+			'height' => 200
+		] );
 
 		$html .= Html::element( 'h3', [], $this->msg( 'analytics-top-editors' ) );
 		$html .= Html::element( 'div', [ 'id' => 'special-analytics-top-editors' ] );

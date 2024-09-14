@@ -10,7 +10,7 @@ class AnalyticsUpdate implements DeferrableUpdate {
 	/**
 	 * Constructor
 	 *
-	 * @param int $page Page ID to increment the view count
+	 * @param int $pageId Page ID to increment the view count
 	 */
 	public function __construct( $pageId ) {
 		$this->pageId = intval( $pageId );

@@ -5,7 +5,7 @@ use MediaWiki\MediaWikiServices;
 class Analytics {
 
 	public static function onLoadExtensionSchemaUpdates( DatabaseUpdater $updater ) {
-		$updater->addExtensionTable( 'analytics_pageviews', __DIR__ . '/Analytics.sql' );
+		$updater->addExtensionTable( 'analytics_pageviews', __DIR__ . '/../sql/Analytics.sql' );
 	}
 
 	public static function onPageViewUpdates( WikiPage $wikipage, User $user ) {

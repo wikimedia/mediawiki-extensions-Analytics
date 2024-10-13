@@ -1,9 +1,11 @@
 <?php
 
+use MediaWiki\Extension\Scribunto\Engines\LuaCommon\LibraryBase;
+
 /**
  * This class queries the database for the Analytics Lua library
  */
-class AnalyticsLua extends Scribunto_LuaLibraryBase {
+class AnalyticsLua extends LibraryBase {
 
 	public static function onScribuntoExternalLibraries( string $engine, array &$extraLibraries ) {
 		$extraLibraries['analytics'] = self::class;

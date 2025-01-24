@@ -1,17 +1,17 @@
-let Analytics = {
+const Analytics = {
 
 	init: function () {
 		Analytics.update();
-		$( '#special-analytics-days select' ).on( 'change', Analytics.update );
-		$( '#special-analytics-frequency select' ).on( 'change', Analytics.update );
-		$( '#special-analytics-page input' ).on( 'change', Analytics.update );
+		document.querySelector( '#special-analytics-days select' ).onchange = Analytics.update;
+		document.querySelector( '#special-analytics-frequency select' ).onchange = Analytics.update;
+		document.querySelector( '#special-analytics-page input' ).onchange = Analytics.update;
 	},
 
 	update: function () {
 		// Get the relevant params
-		const days = $( '#special-analytics-days select' ).val();
-		const frequency = $( '#special-analytics-frequency select' ).val();
-		const page = $( '#special-analytics-page input' ).val();
+		const days = document.querySelector( '#special-analytics-days select' ).value;
+		const frequency = document.querySelector( '#special-analytics-frequency select' ).value;
+		const page = document.querySelector( '#special-analytics-page input' ).value;
 
 		// Update the URL
 		const url = new URL( window.location.href );
@@ -128,10 +128,10 @@ let Analytics = {
 
 // Register a ChartJS plugin to show a message when there's no data
 // https://github.com/chartjs/Chart.js/issues/3745
+// @todo i18n
 Chart.register( {
 	id: 'NoData',
-	afterDraw: function ( chart ) {
-		// eslint-disable-next-line max-len
+	afterDraw: ( chart ) => {
 		if ( chart.data.datasets.map( ( d ) => d.data.length ).reduce( ( p, a ) => p + a, 0 ) === 0 ) {
 			const ctx = chart.ctx;
 			const width = chart.width;
@@ -148,7 +148,4 @@ Chart.register( {
 	}
 } );
 
-mw.loader.using( [
-	'mediawiki.api',
-	'mediawiki.util'
-], Analytics.init );
+Analytics.init();

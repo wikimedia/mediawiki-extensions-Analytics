@@ -1,7 +1,7 @@
 {
 	"manifest_version": 2,
 	"name": "Analytics",
-	"version": "1.0",
+	"version": "1.1",
 	"url": "https://www.mediawiki.org/wiki/Extension:Analytics",
 	"author": "[https://www.mediawiki.org/wiki/User:Sophivorus Felipe Schenone]",
 	"descriptionmsg": "analytics-desc",
@@ -32,14 +32,19 @@
 		"ext.Analytics.styles": {
 			"styles": "Analytics.less"
 		},
+		"ext.Analytics.Chart": {
+			"scripts": "Chart.js"
+		},
 		"ext.Analytics": {
-			"scripts": [
-				"Chart.js",
-				"Analytics.js"
-			],
+			"scripts": "Analytics.js",
 			"messages": [
 				"analytics-top-editors-user",
 				"analytics-top-editors-edits"
+			],
+			"dependencies": [
+				"mediawiki.api",
+				"mediawiki.util",
+				"ext.Analytics.Chart"
 			]
 		}
 	},

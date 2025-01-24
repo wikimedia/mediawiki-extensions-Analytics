@@ -11,7 +11,7 @@ class AnalyticsAPI extends SimpleHandler {
 
 	private const VALID_ENDPOINTS = [ 'views', 'edits', 'editors', 'top-editors' ];
 
-	private const VALID_FREQUENCIES = [ 'monthly', 'daily' ];
+	private const VALID_FREQUENCIES = [ '', 'monthly', 'daily' ];
 
 	public function run( $endpoint ) {
 		$request = $this->getRequest();
@@ -52,7 +52,7 @@ class AnalyticsAPI extends SimpleHandler {
 			],
 			'frequency' => [
 				self::PARAM_SOURCE => 'query',
-				ParamValidator::PARAM_TYPE => self::VALID_FREQUENCIES,
+				ParamValidator::PARAM_TYPE => self::VALID_FREQUENCIES
 			],
 			'page' => [
 				self::PARAM_SOURCE => 'query',

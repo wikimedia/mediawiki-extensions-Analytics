@@ -60,8 +60,8 @@ class Analytics {
 
 		// Connect to the database
 		$services = MediaWikiServices::getInstance();
-		$lb = $services->getDBLoadBalancer();
-		$dbr = $lb->getConnectionRef( DB_REPLICA );
+		$provider = $services->getConnectionProvider();
+		$dbr = $provider->getReplicaDatabase();
 
 		// Build the database query
 		$query = $dbr->newSelectQueryBuilder();
@@ -142,8 +142,8 @@ class Analytics {
 
 		// Connect to the database
 		$services = MediaWikiServices::getInstance();
-		$lb = $services->getDBLoadBalancer();
-		$dbr = $lb->getConnectionRef( DB_REPLICA );
+		$provider = $services->getConnectionProvider();
+		$dbr = $provider->getReplicaDatabase();
 
 		// Build the query
 		$query = $dbr->newSelectQueryBuilder()

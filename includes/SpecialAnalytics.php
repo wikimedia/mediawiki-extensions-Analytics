@@ -20,6 +20,7 @@ class SpecialAnalytics extends SpecialPage {
 		$days = $request->getRawVal( 'days' );
 		$daysDropdown = new OOUI\DropdownInputWidget( [
 			'id' => 'special-analytics-days',
+			'classes' => [ 'special-analytics-filter' ],
 			'value' => $days,
 			'options' => [
 				[ 'data' => 30, 'label' => $this->msg( 'analytics-last-30-days' ) ],
@@ -32,6 +33,7 @@ class SpecialAnalytics extends SpecialPage {
 		$frequency = $request->getRawVal( 'frequency' );
 		$frequencyDropdown = new OOUI\DropdownInputWidget( [
 			'id' => 'special-analytics-frequency',
+			'classes' => [ 'special-analytics-filter' ],
 			'value' => $frequency,
 			'options' => [
 				[ 'data' => 'daily', 'label' => $this->msg( 'analytics-daily' ) ],
@@ -41,6 +43,7 @@ class SpecialAnalytics extends SpecialPage {
 
 		$pageInput = new OOUI\TextInputWidget( [
 			'id' => 'special-analytics-page',
+			'classes' => [ 'special-analytics-filter' ],
 			'placeholder' => $this->msg( 'analytics-filter' ),
 			'value' => $subpage ? str_replace( '_', ' ', $subpage ) : null
 		] );
@@ -53,31 +56,40 @@ class SpecialAnalytics extends SpecialPage {
 		$html .= Html::closeElement( 'div' );
 
 		$html .= Html::element( 'h2', [], $this->msg( 'analytics-views' ) );
-		$html .= Html::element( 'canvas', [
-			'id' => 'special-analytics-views',
-			'class' => 'special-analytics-canvas',
-			'width' => 1000,
-			'height' => 200
-		] );
+		$html .= Html::openElement( 'section', [ 'id' => 'special-analytics-views-section' ] );
+		$html .= Html::openElement( 'dl', [ 'class' => 'special-analytics-description-list' ] );
+		$html .= Html::element( 'dt', [], $this->msg( 'analytics-total' ) );
+		$html .= Html::element( 'dd', [] );
+		$html .= Html::element( 'dt', [], $this->msg( 'analytics-average' ) );
+		$html .= Html::element( 'dd', [] );
+		$html .= Html::closeElement( 'dl' );
+		$html .= Html::element( 'canvas', [ 'class' => 'special-analytics-canvas', 'width' => 1000, 'height' => 200 ] );
+		$html .= Html::closeElement( 'section' );
 
 		$html .= Html::element( 'h2', [], $this->msg( 'analytics-edits' ) );
-		$html .= Html::element( 'canvas', [
-			'id' => 'special-analytics-edits',
-			'class' => 'special-analytics-canvas',
-			'width' => 1000,
-			'height' => 200
-		] );
+		$html .= Html::openElement( 'section', [ 'id' => 'special-analytics-edits-section' ] );
+		$html .= Html::openElement( 'dl', [ 'class' => 'special-analytics-description-list' ] );
+		$html .= Html::element( 'dt', [], $this->msg( 'analytics-total' ) );
+		$html .= Html::element( 'dd', [] );
+		$html .= Html::element( 'dt', [], $this->msg( 'analytics-average' ) );
+		$html .= Html::element( 'dd', [] );
+		$html .= Html::closeElement( 'dl' );
+		$html .= Html::element( 'canvas', [ 'class' => 'special-analytics-canvas', 'width' => 1000, 'height' => 200 ] );
+		$html .= Html::closeElement( 'section' );
 
 		$html .= Html::element( 'h2', [], $this->msg( 'analytics-editors' ) );
-		$html .= Html::element( 'canvas', [
-			'id' => 'special-analytics-editors',
-			'class' => 'special-analytics-canvas',
-			'width' => 1000,
-			'height' => 200
-		] );
+		$html .= Html::openElement( 'section', [ 'id' => 'special-analytics-editors-section' ] );
+		$html .= Html::openElement( 'dl', [ 'class' => 'special-analytics-description-list' ] );
+		$html .= Html::element( 'dt', [], $this->msg( 'analytics-total' ) );
+		$html .= Html::element( 'dd', [] );
+		$html .= Html::element( 'dt', [], $this->msg( 'analytics-average' ) );
+		$html .= Html::element( 'dd', [] );
+		$html .= Html::closeElement( 'dl' );
+		$html .= Html::element( 'canvas', [ 'class' => 'special-analytics-canvas', 'width' => 1000, 'height' => 200 ] );
+		$html .= Html::closeElement( 'section' );
 
 		$html .= Html::element( 'h3', [], $this->msg( 'analytics-top-editors' ) );
-		$html .= Html::element( 'div', [ 'id' => 'special-analytics-top-editors' ] );
+		$html .= Html::element( 'section', [ 'id' => 'special-analytics-top-editors-section' ] );
 
 		$html .= Html::closeElement( 'div' );
 		$output->addHTML( $html );

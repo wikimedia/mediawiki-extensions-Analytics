@@ -13,9 +13,12 @@
 	"analytics-daily": "Diaria",
 	"analytics-monthly": "Mensual",
 	"analytics-filter": "Filtrar por página o categoría...",
+	"analytics-no-data": "Sin datos.",
 	"analytics-views": "Visitas",
 	"analytics-edits": "Ediciones",
 	"analytics-editors": "Editores",
+	"analytics-total": "Total",
+	"analytics-average": "Promedio",
 	"analytics-top-editors": "Principales editores",
 	"analytics-top-editors-user": "Usuario",
 	"analytics-top-editors-edits": "Ediciones"

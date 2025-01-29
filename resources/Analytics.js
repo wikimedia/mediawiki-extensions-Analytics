@@ -43,43 +43,60 @@ const Analytics = {
 
 	updateViews: function ( params ) {
 		new mw.Rest().get( '/analytics/views', params ).done( ( data ) => {
+			const section = document.querySelector( '#special-analytics-views-section' );
+			Analytics.updateDescriptionList( section, data );
 			if ( Analytics.viewsChart ) {
 				Analytics.viewsChart.destroy();
 			}
-			const canvas = document.getElementById( 'special-analytics-views' );
-			Analytics.viewsChart = Analytics.makeChart( canvas, data );
+			Analytics.viewsChart = Analytics.updateChart( section, data );
 		} );
 	},
 
 	updateEdits: function ( params ) {
 		new mw.Rest().get( '/analytics/edits', params ).done( ( data ) => {
+			const section = document.querySelector( '#special-analytics-edits-section' );
+			Analytics.updateDescriptionList( section, data );
 			if ( Analytics.editsChart ) {
 				Analytics.editsChart.destroy();
 			}
-			const canvas = document.getElementById( 'special-analytics-edits' );
-			Analytics.editsChart = Analytics.makeChart( canvas, data );
+			Analytics.editsChart = Analytics.updateChart( section, data );
 		} );
 	},
 
 	updateEditors: function ( params ) {
 		new mw.Rest().get( '/analytics/editors', params ).done( ( data ) => {
+			const section = document.querySelector( '#special-analytics-editors-section' );
+			Analytics.updateDescriptionList( section, data );
 			if ( Analytics.editorsChart ) {
 				Analytics.editorsChart.destroy();
 			}
-			const canvas = document.getElementById( 'special-analytics-editors' );
-			Analytics.editorsChart = Analytics.makeChart( canvas, data );
+			Analytics.editorsChart = Analytics.updateChart( section, data );
 		} );
 	},
 
 	updateTopEditors: function ( params ) {
 		new mw.Rest().get( '/analytics/top-editors', params ).done( ( data ) => {
-			const $table = Analytics.makeTable( data );
-			const div = document.getElementById( 'special-analytics-top-editors' );
-			$( div ).html( $table );
+			const section = document.getElementById( 'special-analytics-top-editors-section' );
+			const table = Analytics.makeTable( data );
+			section.replaceChildren( table );
 		} );
 	},
 
-	makeChart: function ( canvas, data ) {
+	updateDescriptionList: function ( section, data ) {
+		const dl = section.querySelector( 'dl' );
+
+		// eslint-disable-next-line es-x/no-object-values
+		const total = Object.values( data ).reduce( ( a, b ) => a + b, 0 );
+		const dd1 = dl.getElementsByTagName( 'dd' )[ 0 ];
+		dd1.textContent = total;
+
+		const average = Math.round( total / Object.keys( data ).length );
+		const dd2 = dl.getElementsByTagName( 'dd' )[ 1 ];
+		dd2.textContent = average;
+	},
+
+	updateChart: function ( section, data ) {
+		const canvas = section.querySelector( '.special-analytics-canvas' );
 		return new Chart( canvas, {
 			type: 'line',
 			data: {
@@ -108,27 +125,35 @@ const Analytics = {
 	},
 
 	makeTable: function ( data ) {
-		const $th1 = $( '<th></th>' ).text( mw.msg( 'analytics-top-editors-user' ) );
-		const $th2 = $( '<th></th>' ).text( mw.msg( 'analytics-top-editors-edits' ) );
-		const $thr = $( '<tr></tr>' ).append( $th1, $th2 );
-		const $table = $( '<table class="wikitable"></table>' ).append( $thr );
-		// eslint-disable-next-line es-x/no-object-entries
-		for ( const [ user, edits ] of Object.entries( data ) ) {
+		const th1 = document.createElement( 'th' );
+		th1.textContent = mw.msg( 'analytics-top-editors-user' );
+		const th2 = document.createElement( 'th' );
+		th2.textContent = mw.msg( 'analytics-top-editors-edits' );
+		const thr = document.createElement( 'tr' );
+		thr.append( th1, th2 );
+		const table = document.createElement( 'table' );
+		table.classList.add( 'wikitable' );
+		table.append( thr );
+		for ( const user in data ) {
+			const edits = data[ user ];
 			const url = mw.util.getUrl( 'User:' + user );
-			// eslint-disable-next-line no-jquery/variable-pattern
-			const link = $( '<a href="' + url + '">' + user + '</a>' );
-			const $td1 = $( '<td></td>' ).html( link );
-			const $td2 = $( '<td></td>' ).text( edits );
-			const $tdr = $( '<tr></tr>' ).append( $td1, $td2 );
-			$table.append( $tdr );
+			const link = document.createElement( 'a' );
+			link.textContent = user;
+			link.href = url;
+			const td1 = document.createElement( 'td' );
+			td1.append( link );
+			const td2 = document.createElement( 'td' );
+			td2.textContent = edits;
+			const tdr = document.createElement( 'tr' );
+			tdr.append( td1, td2 );
+			table.append( tdr );
 		}
-		return $table;
+		return table;
 	}
 };
 
 // Register a ChartJS plugin to show a message when there's no data
 // https://github.com/chartjs/Chart.js/issues/3745
-// @todo i18n
 Chart.register( {
 	id: 'NoData',
 	afterDraw: ( chart ) => {
@@ -136,13 +161,14 @@ Chart.register( {
 			const ctx = chart.ctx;
 			const width = chart.width;
 			const height = chart.height;
+			const message = mw.msg( 'analytics-no-data' );
 			chart.clear();
 			ctx.save();
 			ctx.textAlign = 'center';
 			ctx.textBaseline = 'middle';
 			ctx.font = '1.5rem ' + window.getComputedStyle( document.body ).fontFamily;
 			ctx.fillStyle = '#aaa';
-			ctx.fillText( 'No data for this time period', width / 2, height / 2 );
+			ctx.fillText( message, width / 2, height / 2 );
 			ctx.restore();
 		}
 	}

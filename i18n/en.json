@@ -13,9 +13,12 @@
 	"analytics-daily": "Daily",
 	"analytics-monthly": "Monthly",
 	"analytics-filter": "Filter by page or category...",
+	"analytics-no-data": "No data.",
 	"analytics-views": "Views",
 	"analytics-edits": "Edits",
 	"analytics-editors": "Editors",
+	"analytics-total": "Total",
+	"analytics-average": "Average",
 	"analytics-top-editors": "Top editors",
 	"analytics-top-editors-user": "User",
 	"analytics-top-editors-edits": "Edits"

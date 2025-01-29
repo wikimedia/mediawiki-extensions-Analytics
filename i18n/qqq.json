@@ -13,9 +13,12 @@
 	"analytics-daily": "Dropdown option to group results by day.",
 	"analytics-monthly": "Dropdown option to group results by month.",
 	"analytics-filter": "Placeholder to limit data to a specific page or category.",
+	"analytics-no-data": "Error message when no data is found.",
 	"analytics-views": "Section title for the data regarding page views.",
 	"analytics-edits": "Section title for the data regarding edits.",
 	"analytics-editors": "Section title for the data regarding editors.",
+	"analytics-total": "Description term for the total number of views, edits or editors",
+	"analytics-average": "Description term for the average number of views, edits or editors",
 	"analytics-top-editors": "Section title for the data regarding top editors.",
 	"analytics-top-editors-user": "Table header for the user names column of the top editors table.",
 	"analytics-top-editors-edits": "Table header for the edit count column of the top editors table."

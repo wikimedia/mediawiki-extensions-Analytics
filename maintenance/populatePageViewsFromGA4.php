@@ -8,7 +8,6 @@ use Google\Analytics\Data\V1beta\DateRange;
 use Google\Analytics\Data\V1beta\Dimension;
 use Google\Analytics\Data\V1beta\Metric;
 use Google\Analytics\Data\V1beta\RunReportRequest;
-use MediaWiki\MediaWikiServices;
 
 class AnalyticsPageViewsScript extends Maintenance {
 
@@ -33,7 +32,7 @@ class AnalyticsPageViewsScript extends Maintenance {
 		$offset = $this->getOption( 'offset' );
 
 		// Connect to the database
-		$services = MediaWikiServices::getInstance();
+		$services = $this->getServiceContainer();
 		$lb = $services->getDBLoadBalancer();
 		$dbw = $lb->getConnectionRef( DB_PRIMARY );
 

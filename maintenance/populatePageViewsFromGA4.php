@@ -8,6 +8,7 @@ use Google\Analytics\Data\V1beta\DateRange;
 use Google\Analytics\Data\V1beta\Dimension;
 use Google\Analytics\Data\V1beta\Metric;
 use Google\Analytics\Data\V1beta\RunReportRequest;
+use MediaWiki\Title\Title;
 
 class AnalyticsPageViewsScript extends Maintenance {
 

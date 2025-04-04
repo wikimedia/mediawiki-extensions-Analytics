@@ -1,5 +1,7 @@
 <?php
 
+use MediaWiki\Html\Html;
+
 class SpecialAnalytics extends SpecialPage {
 
 	public function __construct( $name = '', $restriction = '', $listed = true ) {

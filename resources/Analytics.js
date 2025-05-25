@@ -85,7 +85,6 @@ const Analytics = {
 	updateDescriptionList: function ( section, data ) {
 		const dl = section.querySelector( 'dl' );
 
-		// eslint-disable-next-line es-x/no-object-values
 		const total = Object.values( data ).reduce( ( a, b ) => a + b, 0 );
 		const dd1 = dl.getElementsByTagName( 'dd' )[ 0 ];
 		dd1.textContent = total;
@@ -102,7 +101,7 @@ const Analytics = {
 			data: {
 				labels: Object.keys( data ),
 				datasets: [ {
-					// eslint-disable-next-line es-x/no-object-values
+
 					data: Object.values( data ),
 					borderWidth: 1
 				} ]

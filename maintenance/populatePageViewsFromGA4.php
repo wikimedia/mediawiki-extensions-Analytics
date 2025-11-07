@@ -35,7 +35,7 @@ class AnalyticsPageViewsScript extends Maintenance {
 		// Connect to the database
 		$services = $this->getServiceContainer();
 		$lb = $services->getDBLoadBalancer();
-		$dbw = $lb->getConnectionRef( DB_PRIMARY );
+		$dbw = $lb->getConnection( DB_PRIMARY );
 
 		// Connect to Google Cloud
 		$client = new BetaAnalyticsDataClient( [

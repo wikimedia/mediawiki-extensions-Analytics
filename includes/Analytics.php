@@ -92,8 +92,9 @@ class Analytics {
 			$title = Title::newFromText( $page );
 			if ( $title->getNamespace() === NS_CATEGORY ) {
 				$tablePrefix = $dbr->tablePrefix();
-				$pageKey = $title->getDBkey();
-				$query->where( $pageField . ' IN ( SELECT cl_from FROM ' . $tablePrefix . 'categorylinks WHERE cl_to = "' . $pageKey . '" )' );
+				$linkTargetLookup = $services->getLinkTargetLookup();
+				$linkTargetId = $linkTargetLookup->getLinkTargetId( $title );
+				$query->where( "$pageField IN ( SELECT cl_from FROM " . $tablePrefix . "categorylinks WHERE cl_target_id = $linkTargetId )" );
 			} else {
 				$pageId = $title->getArticleID();
 				$query->where( [ $pageField => $pageId ] );
@@ -158,8 +159,9 @@ class Analytics {
 			$title = Title::newFromText( $page );
 			if ( $title->getNamespace() === NS_CATEGORY ) {
 				$tablePrefix = $dbr->tablePrefix();
-				$pageKey = $title->getDBkey();
-				$query->where( 'rev_page IN ( SELECT cl_from FROM ' . $tablePrefix . 'categorylinks WHERE cl_to = "' . $pageKey . '" )' );
+				$linkTargetLookup = $services->getLinkTargetLookup();
+				$linkTargetId = $linkTargetLookup->getLinkTargetId( $title );
+				$query->where( "rev_page IN ( SELECT cl_from FROM " . $tablePrefix . "categorylinks WHERE cl_target_id = $linkTargetId )" );
 			} else {
 				$pageId = $title->getArticleID();
 				$query->where( [ 'rev_page' => $pageId ] );

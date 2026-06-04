@@ -160,7 +160,7 @@ class Analytics {
 			if ( $title->getNamespace() === NS_CATEGORY ) {
 				$tablePrefix = $dbr->tablePrefix();
 				$linkTargetLookup = $services->getLinkTargetLookup();
-				$linkTargetId = $linkTargetLookup->getLinkTargetId( $title );
+				$linkTargetId = $linkTargetLookup->getLinkTargetId( $title ) ?? 0;
 				$query->where( "rev_page IN ( SELECT cl_from FROM " . $tablePrefix . "categorylinks WHERE cl_target_id = $linkTargetId )" );
 			} else {
 				$pageId = $title->getArticleID();

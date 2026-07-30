@@ -1,0 +1,25 @@
+{
+        "@metadata": {
+                "authors": [
+                        "Bigsmooth68"
+                ]
+        },
+        "analytics": "Analytique",
+        "analytics-desc": "Analytique de trafic and editions",
+        "analytics-last-30-days": "Dernier 30 jours",
+        "analytics-last-90-days": "Dernier 90 jours",
+        "analytics-last-365-days": "Dernier 365 jours",
+        "analytics-all-time": "Depuis le début",
+        "analytics-daily": "Journalier",
+        "analytics-monthly": "Mensuel",
+        "analytics-filter": "Filtrer par pages ou catégories...",
+        "analytics-no-data": "Pas de données.",
+        "analytics-views": "Vues",
+        "analytics-edits": "Editions",
+        "analytics-editors": "Editeurs",
+        "analytics-total": "Total",
+        "analytics-average": "Moyenne",
+        "analytics-top-editors": "Top editeurs",
+        "analytics-top-editors-user": "User",
+        "analytics-top-editors-edits": "Edits"
+}

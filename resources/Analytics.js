@@ -33,7 +33,7 @@ const Analytics = {
 		window.history.pushState( {}, '', url.href );
 
 		// Update the charts and tables
-		// eslint-disable-next-line compat/compat, es-x/no-object-fromentries
+
 		const params = Object.fromEntries( url.searchParams );
 		Analytics.updateViews( params );
 		Analytics.updateEdits( params );
